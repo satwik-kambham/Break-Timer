@@ -1,0 +1,23 @@
+html {
+  font-family: "Roboto", sans-serif;
+  color: #e4ebff;
+}
+
+body {
+  text-align: center;
+}
+
+h1 {
+  font-size: 280%;
+}
+
+#myProgress {
+  width: 100%;
+  background-color: grey;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: green;
+}

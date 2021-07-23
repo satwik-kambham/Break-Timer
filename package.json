@@ -1,0 +1,25 @@
+{
+  "name": "break-timer",
+  "version": "1.0.0",
+  "description": "A break timer made using the electron framework.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-explorer/Break-Timer.git"
+  },
+  "keywords": [
+    "Electron"
+  ],
+  "author": "Satwik Kambham",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/code-explorer/Break-Timer/issues"
+  },
+  "homepage": "https://github.com/code-explorer/Break-Timer#readme",
+  "devDependencies": {
+    "electron": "^13.1.7"
+  }
+}
