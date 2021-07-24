@@ -2,28 +2,78 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
-      rel="stylesheet"
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
     />
     <link rel="stylesheet" href="style.css" />
     <title>Break Timer</title>
   </head>
   <body>
-    <h1>Break Timer</h1>
-    <br /><br />
+    <h1>Time for a break !!</h1>
+    <br />
     <hr />
-    <br /><br />
-    Time left: <span id="time"></span>
+    <br />
+    Time left: <span id="time"></span> <br /><br />
     <div id="myProgress">
       <div id="myBar"></div>
     </div>
     <br /><br />
     <hr />
+    <br />
+    <button id="skip" class="square_btn">Skip Break</button>
+    <button class="square_btn">Pose Challenge</button>
     <br /><br />
-    <button onclick="properExit()" id="skip">Skip Break</button>
+    <hr />
+    <br />
+
+    <h2>Settings</h2>
+    <br />
+    <br />
+
+    <div class="settings">
+      <label for="short_break_time"><pre>Short Break Time    </pre></label>
+      <input name="short_break_time" id="short_break_time" list="intervals" />
+      <label for="short_break_interval">
+        <pre>    Short Break Interval    </pre>
+      </label>
+      <input
+        name="short_break_interval"
+        id="short_break_interval"
+        list="intervals"
+      />
+    </div>
+    <br />
+    <div class="settings">
+      <label for="long_break_time"><pre>Long Break Time    </pre></label>
+      <input name="long_break_time" id="long_break_time" list="intervals" />
+      <label for="long_break_interval">
+        <pre>    Long Break Interval    </pre>
+      </label>
+      <input
+        name="long_break_interval"
+        id="long_break_interval"
+        list="intervals"
+      />
+    </div>
+    <br /><br />
+    <button class="square_btn" id="save">Save Changes</button>
+
+    <datalist id="intervals">
+      <option value="10 seconds"></option>
+      <option value="20 seconds"></option>
+      <option value="30 seconds"></option>
+      <option value="1 minute"></option>
+      <option value="2 minutes"></option>
+      <option value="5 minutes"></option>
+      <option value="10 minutes"></option>
+      <option value="15 minutes"></option>
+      <option value="20 minutes"></option>
+    </datalist>
 
     <script src="script.js"></script>
   </body>

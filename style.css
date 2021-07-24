@@ -1,23 +1,58 @@
-html {
+html,
+pre {
   font-family: "Roboto", sans-serif;
   color: #e4ebff;
 }
 
 body {
   text-align: center;
+  background-color: rgba(40, 44, 52, 0.9);
 }
 
 h1 {
   font-size: 280%;
 }
 
+hr {
+  border-width: 0 0 1px;
+  color: skyblue;
+  border-style: solid;
+}
+
+input {
+  color: #e4ebff;
+  background-color: #21252b;
+}
+
 #myProgress {
   width: 100%;
-  background-color: grey;
+  background-color: #3e4551;
 }
 
 #myBar {
   width: 1%;
   height: 30px;
-  background-color: green;
+  background-color: #e06253;
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.square_btn {
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background: #61afef;
+  color: #fff;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+}
+.square_btn:active {
+  -ms-transform: translateY(4px);
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);
+  border-bottom: none;
 }

@@ -1,17 +1,30 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, Menu, Tray } = require("electron");
+const fs = require("fs");
 
-let timeBetweenBreaks = 5000;
+let preferences;
+fs.readFile("preferences.json", function (err, data) {
+  if (err) throw err;
+  preferences = JSON.parse(data);
+});
+
+let appIcon = null;
+
+let timeBetweenBreaks = 30000;
 
 function createWindow() {
   const win = new BrowserWindow({
-    backgroundColor: "#282C34",
     resizable: false,
     movable: false,
     minimizable: false,
     maximizable: false,
     fullscreen: true,
     frame: false,
-    opacity: 0.95,
+    transparent: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+    icon: "./Assets/Icon.ico",
   });
 
   win.loadFile("index.html");
@@ -28,14 +41,26 @@ function createWindow() {
       }, timeBetweenBreaks);
     }
   });
-  win.on("close", (event) => {
-    app.quit();
-  });
+
+  addToTray();
 }
 
-app.whenReady().then(() => {
-  createWindow();
-});
+function addToTray() {
+  appIcon = new Tray("./Assets/Icon.ico");
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Quit",
+      type: "normal",
+      click: () => {
+        app.quit();
+      },
+    },
+  ]);
+
+  appIcon.setContextMenu(contextMenu);
+}
+
+app.on("ready", () => setTimeout(createWindow, 500));
 
 app.on("before-quit", () => (app.quitting = true));
 

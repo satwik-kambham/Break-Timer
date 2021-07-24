@@ -1,0 +1,10 @@
+{
+    "ShortBreak": {
+        "Duration": "30 seconds",
+        "Frequency": 30
+    },
+    "LongBreak": {
+        "Duration": "30 seconds",
+        "Frequency": 60
+    }
+}

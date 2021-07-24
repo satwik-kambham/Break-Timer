@@ -1,16 +1,56 @@
-const breakTime = 240000;
-let timeLeft = breakTime;
-let timeElement = document.getElementById("time");
+const fs = require("fs");
 
-function resizing() {
-  window.resizeBy(0, 0);
-}
+const intervals = {
+  "10 seconds": 10,
+  "20 seconds": 20,
+  "30 seconds": 30,
+  "1 minute": 60,
+  "2 minutes": 120,
+  "5 minutes": 300,
+  "10 minutes": 600,
+  "15 minutes": 900,
+  "20 minutes": 1200,
+};
+let timeLeft;
+let timeElement;
+let breakTime;
 
-function properExit() {
+let preferences;
+fs.readFile("preferences.json", function (err, data) {
+  if (err) throw err;
+  preferences = JSON.parse(data);
+
+  breakTime = 1000 * intervals[preferences.ShortBreak.Duration];
+  timeLeft = breakTime;
+  timeElement = document.getElementById("time");
+
+  move();
+});
+
+function hideWindow() {
   window.close();
 }
 
-move();
+document.getElementById("skip").addEventListener("click", hideWindow);
+
+function save() {
+  preferences["ShortBreak"]["Duration"] =
+    document.getElementById("short_break_time").value;
+
+  fs.writeFile(
+    "preferences.json",
+    JSON.stringify(preferences),
+    (jsonString, err) => {
+      if (err) {
+        console.log("Error writing file", err);
+      } else {
+        console.log("Successfully wrote file");
+      }
+    }
+  );
+}
+
+document.getElementById("save").addEventListener("click", save);
 
 function move() {
   let i = 0;
@@ -20,7 +60,7 @@ function move() {
   function frame() {
     if (width >= 100) {
       clearInterval(id);
-      resizing();
+      hideWindow();
     } else {
       i++;
       width += 0.1;
@@ -33,14 +73,12 @@ function move() {
         timeElement.innerText =
           "1 minute and " + (Math.floor(timeLeft / 1000) - 60) + " seconds";
       } else if (timeLeft / 1000 > 120 && timeLeft / 1000 < 600) {
-        console.log("2 to 5");
         timeElement.innerText =
           Math.floor(timeLeft / 60000) +
           " minutes and " +
           (Math.floor(timeLeft / 1000) - Math.floor(timeLeft / 60000) * 60) +
           " seconds";
       } else {
-        console.log("More than 5");
         timeElement.innerText = Math.floor(timeLeft / 60000) + " minutes";
       }
     }
