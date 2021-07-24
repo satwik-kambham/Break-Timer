@@ -8,51 +8,72 @@ fs.readFile("preferences.json", function (err, data) {
 });
 
 let appIcon = null;
-
-let timeBetweenBreaks = 30000;
+let firstTime = true;
+let onBreak = false;
+let timeBetweenBreaks = 20000;
 
 function createWindow() {
-  const win = new BrowserWindow({
-    resizable: false,
-    movable: false,
-    minimizable: false,
-    maximizable: false,
-    fullscreen: true,
-    frame: false,
-    transparent: true,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-    icon: "./Assets/Icon.ico",
-  });
+  if (!onBreak) {
+    const win = new BrowserWindow({
+      resizable: false,
+      movable: false,
+      minimizable: false,
+      maximizable: false,
+      fullscreen: true,
+      frame: false,
+      transparent: true,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
+      icon: "./Assets/Icon.ico",
+    });
 
-  win.loadFile("index.html");
+    win.loadFile("index.html");
+    onBreak = true;
 
-  win.webContents.openDevTools();
-  win.on("resize", (event) => {
-    if (app.quitting) {
-      win = null;
-    } else {
-      event.preventDefault();
-      win.hide();
-      setTimeout(function () {
-        createWindow();
-      }, timeBetweenBreaks);
+    // win.webContents.openDevTools();
+    win.on("close", (event) => {
+      if (app.quitting) {
+        win = null;
+      } else {
+        onBreak = false;
+        event.preventDefault();
+        win.hide();
+        setTimeout(function () {
+          createWindow();
+        }, timeBetweenBreaks);
+      }
+    });
+
+    if (firstTime) {
+      addToTray();
+      firstTime = false;
     }
-  });
-
-  addToTray();
+  }
 }
 
 function addToTray() {
   appIcon = new Tray("./Assets/Icon.ico");
   const contextMenu = Menu.buildFromTemplate([
     {
+      label: "Take a break",
+      type: "normal",
+      click: () => {
+        createWindow();
+      },
+    },
+    {
+      label: "Separator",
+      type: "separator",
+    },
+    {
       label: "Quit",
       type: "normal",
       click: () => {
+        console.log("Quitting");
         app.quit();
+        return;
       },
     },
   ]);
