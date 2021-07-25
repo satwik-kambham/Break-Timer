@@ -12,6 +12,6 @@ TODO:
 
 [X] Pause and Un-pause the program
 [X] Add a differentiation between long and short breaks.
-[ ] Start long or short breaks based on the timer
+[X] Start long or short breaks based on the timer
 [ ] Create the ml5 Pose-net page.
 [ ] Add the redirection to the Pose-net page.

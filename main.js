@@ -14,18 +14,28 @@ const intervals = {
 };
 
 let appIcon = null;
-let firstTime = true;
 let onBreak = false;
 let paused = false;
 let breakType = "s";
-let timeBetweenBreaks = 10000;
 
 let preferences;
-fs.readFile("preferences.json", function (err, data) {
-  if (err) throw err;
-  preferences = JSON.parse(data);
-  timeBetweenBreaks = intervals[preferences.ShortBreak.Frequency] * 1000;
-});
+
+let id;
+function timer() {
+  let shortInterval = intervals[preferences.ShortBreak.Frequency];
+  let longInterval = intervals[preferences.LongBreak.Frequency];
+  let currentTime = 0;
+  id = setInterval(() => {
+    currentTime += 10;
+    if (currentTime % longInterval == 0) {
+      breakType = "l";
+      createWindow();
+    } else if (currentTime % shortInterval == 0) {
+      breakType = "s";
+      createWindow();
+    }
+  }, 10000);
+}
 
 function createWindow() {
   if (!paused && !onBreak) {
@@ -33,7 +43,7 @@ function createWindow() {
   }
 }
 
-function createMainWindow(repeat) {
+function createMainWindow() {
   let win = new BrowserWindow({
     resizable: false,
     movable: false,
@@ -61,17 +71,8 @@ function createMainWindow(repeat) {
       onBreak = false;
       event.preventDefault();
       win.hide();
-      if (repeat)
-        setTimeout(function () {
-          createWindow();
-        }, timeBetweenBreaks);
     }
   });
-
-  if (firstTime) {
-    addToTray();
-    firstTime = false;
-  }
 }
 
 function addToTray() {
@@ -82,7 +83,7 @@ function addToTray() {
       type: "normal",
       click: () => {
         breakType = "s";
-        createMainWindow(false);
+        createMainWindow();
       },
     },
     {
@@ -90,7 +91,7 @@ function addToTray() {
       type: "normal",
       click: () => {
         breakType = "l";
-        createMainWindow(false);
+        createMainWindow();
       },
     },
     {
@@ -120,7 +121,6 @@ function addToTray() {
       label: "Quit",
       type: "normal",
       click: () => {
-        console.log("Quitting");
         app.quit();
         return;
       },
@@ -134,9 +134,21 @@ ipcMain.on("breakType", (event, arg) => {
   event.returnValue = breakType;
 });
 
-app.on("ready", () => setTimeout(createWindow, 500));
+app.on("ready", () =>
+  setTimeout(() => {
+    fs.readFile("preferences.json", function (err, data) {
+      if (err) throw err;
+      preferences = JSON.parse(data);
+      addToTray();
+      timer();
+    });
+  }, 500)
+);
 
-app.on("before-quit", () => (app.quitting = true));
+app.on("before-quit", () => {
+  app.quitting = true;
+  clearInterval(id);
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {

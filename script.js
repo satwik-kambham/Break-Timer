@@ -59,6 +59,12 @@ function save() {
   // updating the local preferences variable
   preferences["ShortBreak"]["Duration"] =
     document.getElementById("short_break_time").value;
+  preferences["ShortBreak"]["Frequency"] =
+    document.getElementById("short_break_interval").value;
+  preferences["LongBreak"]["Duration"] =
+    document.getElementById("long_break_time").value;
+  preferences["LongBreak"]["Frequency"] =
+    document.getElementById("long_break_interval").value;
 
   // copying the preferences variable over to the json file
   fs.writeFile(
