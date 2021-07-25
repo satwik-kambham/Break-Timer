@@ -1,1 +1,1 @@
-{"ShortBreak":{"Duration":"10 seconds","Frequency":30},"LongBreak":{"Duration":"30 seconds","Frequency":60}}
+{"ShortBreak":{"Duration":"20 seconds","Frequency":"30 seconds"},"LongBreak":{"Duration":"30 seconds","Frequency":"30 seconds"}}
